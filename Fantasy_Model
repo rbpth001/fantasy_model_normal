@@ -122,12 +122,21 @@ filter(dateGame >= '2022-03-07' & dateGame <= '2022-03-13')
 
 home_game <- game %>%
 group_by(slugTeamHome) %>%
-summarize(count = count(slugTeamHome))
+summarize(count = n())
 
 away_game <- game %>%
 group_by(slugTeamAway) %>%
-summarize(count = count(slugTeamAway))
+summarize(count = n())
 
+colnames(home_game)[1] <- "team"
+colnames(away_game)[1] <- "team"
 
+week_game <- <- full_join(home_game, away_game, by = "team")
+week_game[is.na(week_game)] <- 0
+week_game <- week_game$count.x + week_game$count.y
+week_game <- week_game[,-c(2, 3)]
+
+#Model Making
+model = lm(formula = fpts ~ average_fpts + month_fpts + two_week_fpts + last_week_fpts)
 
 
