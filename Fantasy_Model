@@ -1,0 +1,115 @@
+library(nbastatR)
+library(plyr)
+library(tidyverse)
+
+#Gathering Data
+Sys.setenv("VROOM_CONNECTION_SIZE" = 131072 * 2)
+data <- game_logs(seasons = 2022)
+data <- data[, 1:50]
+
+#Add Double-Double, Triple-Double, FPTS
+data <- data %>%
+mutate(dd = if_else((pts>=10&ast>=10)|(pts>=10&treb>=10)|(treb>=10|ast>=10),1, 0))
+data <- data %>%
+mutate(td = if_else(pts>=10&ast>=10&treb>=10, 1, 0))
+data$fpts <- data$fga * -1 + data$fgm * 2 + data$fta * -1 + data$ftm * 1.5 + data$fg3a * -1 + data$fg3m * 3 + data$pts * 1 + data$treb * 1.2 + data$ast * 1.8 + data$stl * 3 + data$blk * 3 + data$tov * -1 + data$dd * 3 + data$td * 5
+
+#Season_Aveage
+full_season <- data %>%
+filter(dateGame <= '2022-03-07') %>%
+group_by(namePlayer) %>%
+summarize(average_fpts = mean(fpts))
+
+#Month_Average
+last_month <- data %>%
+filter(dateGame >= '2022-02-08' & dateGame <= '2022-03-07') %>%
+group_by(namePlayer) %>%
+summarize(month_fpts = mean(fpts))
+
+#Two_Week_Average
+last_two_week <- data %>%
+filter(dateGame >= '2022-02-22' & dateGame <= '2022-03-07') %>%
+group_by(namePlayer) %>%
+summarize(two_week_fpts = mean(fpts))
+
+#Last_Week_Average
+last_week <- data %>%
+filter(dateGame >= '2022-03-01' & dateGame <= '2022-03-07') %>%
+group_by(namePlayer) %>%
+summarize(last_week_fpts = mean(fpts))
+
+#Prediction
+regression = join_all(list(full_season, last_month, last_two_week, last_week), by = "namePlayer", type = "full")
+colnames(regression)[1] <- "name"
+regression$two_week_fpts = ifelse(!is.na(regression$two_week_fpts), regression$two_week_fpts, regression$last_week_fpts)
+regression$month_fpts = ifelse(!is.na(regression$month_fpts), regression$month_fpts, regression$last_week_fpts)
+regression <- regression %>%
++ filter(!is.na(last_week_fpts))
+predicted <- predict(model, newdata = regression, interval = "prediction")
+player <- data.frame(regression$namePlayer)
+colname(player)[1] <- "name"
+player <- cbind(player, predicted, by = "name")
+colnames(week_game)[1] <- "slugTeam"
+
+#Modified Week_Game
+week_game[26, 2] <- 3
+
+#Team-Player Check
+lakers_player <- c(""Jrue Holiday","Marcus Smart","Dejounte Murray","Bogdan Bogdanovic", "Kyle Kuzma", "Kevin Love", "Ivica Zubac","John Collins","Russell Westbrook","James Harden", "Mikal Bridges","Terance Mann","Steven Adams", "Malik Monk")
+
+#Team Data Frame
+
+#Giants
+giants <- data.frame(giants_player)
+colnames(giants)[1] <- "name"
+giants <- left_join(giants, player, by = "name")
+giants <- left_join(giants, player_data_2, by = "name")
+giants <- left_join(giants, week_game, by = "slugTeam")
+giants$fpts <- giants$fit * giants$count
+giants_projection <- sum(giants$fpts)
+
+#Kings
+kings <- data.frame(kings_player)
+colnames(kings)[1] <- "name"
+kings <- left_join(kings, player, by = "name")
+kings <- left_join(kings, player_data_2, by = "name")
+kings <- left_join(kings, week_game, by = "slugTeam")
+kings$fpts <- kings$fit * kings$count
+kings_projection <- sum(kings$fpts)
+
+#Jazz
+jazz <- data.frame(jazz_player)
+colnames(jazz)[1] <- "name"
+jazz <- left_join(jazz, player, by = "name")
+jazz <- left_join(jazz, player_data_2, by = "name")
+jazz <- left_join(jazz, week_game, by = "slugTeam")
+jazz$fpts <- jazz$fit * jazz$count
+jazz_projection <- sum(jazz$fpts)
+
+#Lakers
+lakers <- data.frame(lakers_player)
+colnames(lakers)[1] <- "name"
+lakers <- left_join(lakers, player, by = "name")
+lakers <- left_join(lakers, player_data_2, by = "name")
+lakers <- left_join(lakers, week_game, by = "slugTeam")
+lakers$fpts <- lakers$fit * lakers$count
+lakers_projection <- sum(lakers$fpts)
+
+#Weak
+weak <- data.frame(weak_player)
+colnames(weak)[1] <- "name"
+weak <- left_join(weak, player, by = "name")
+weak <- left_join(weak, player_data_2, by = "name")
+weak <- left_join(weak, week_game, by = "slugTeam")
+weak$fpts <- weak$fit * weak$count
+weak_projection <- sum(weak$fpts)
+
+#Sixers
+sixers <- data.frame(sixers_player)
+colnames(sixers)[1] <- "name"
+sixers <- left_join(sixers, player, by = "name")
+sixers <- left_join(sixers, player_data_2, by = "name")
+sixers <- left_join(sixers, week_game, by = "slugTeam")
+sixers$fpts <- sixers$fit * sixers$count
+sixers_projection <- sum(sixers$fpts)
+
