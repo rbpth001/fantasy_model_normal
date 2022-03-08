@@ -113,3 +113,21 @@ sixers <- left_join(sixers, week_game, by = "slugTeam")
 sixers$fpts <- sixers$fit * sixers$count
 sixers_projection <- sum(sixers$fpts)
 
+
+#Game_Schedule
+game <- current_schedule()
+
+game <- game %>%
+filter(dateGame >= '2022-03-07' & dateGame <= '2022-03-13')
+
+home_game <- game %>%
+group_by(slugTeamHome) %>%
+summarize(count = count(slugTeamHome))
+
+away_game <- game %>%
+group_by(slugTeamAway) %>%
+summarize(count = count(slugTeamAway))
+
+
+
+
