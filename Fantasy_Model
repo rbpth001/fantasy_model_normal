@@ -44,10 +44,10 @@ colnames(regression)[1] <- "name"
 regression$two_week_fpts = ifelse(!is.na(regression$two_week_fpts), regression$two_week_fpts, regression$last_week_fpts)
 regression$month_fpts = ifelse(!is.na(regression$month_fpts), regression$month_fpts, regression$last_week_fpts)
 regression <- regression %>%
-+ filter(!is.na(last_week_fpts))
+filter(!is.na(last_week_fpts))
 predicted <- predict(model, newdata = regression, interval = "prediction")
 player <- data.frame(regression$namePlayer)
-colname(player)[1] <- "name"
+colnames(player)[1] <- "name"
 player <- cbind(player, predicted, by = "name")
 colnames(week_game)[1] <- "slugTeam"
 
