@@ -49,10 +49,29 @@ predicted <- predict(model, newdata = regression, interval = "prediction")
 player <- data.frame(regression$name)
 colnames(player)[1] <- "name"
 player <- cbind(player, predicted)
-colnames(week_game)[1] <- "slugTeam"
 
 #Modified Week_Game
-week_game[26, 2] <- 3
+game <- current_schedule()
+
+game <- game %>%
+filter(dateGame >= '2022-03-07' & dateGame <= '2022-03-13')
+
+home_game <- game %>%
+group_by(slugTeamHome) %>%
+summarize(count = n())
+
+away_game <- game %>%
+group_by(slugTeamAway) %>%
+summarize(count = n())
+
+colnames(home_game)[1] <- "team"
+colnames(away_game)[1] <- "team"
+
+week_game <- <- full_join(home_game, away_game, by = "team")
+week_game[is.na(week_game)] <- 0
+week_game$count <- week_game$count.x + week_game$count.y
+week_game <- week_game[,-c(2, 3)]
+colnames(week_game)[1] <- "slugTeam"
 
 #Team-Player Check
 lakers_player <- c(""Jrue Holiday","Marcus Smart","Dejounte Murray","Bogdan Bogdanovic", "Kyle Kuzma", "Kevin Love", "Ivica Zubac","John Collins","Russell Westbrook","James Harden", "Mikal Bridges","Terance Mann","Steven Adams", "Malik Monk")
@@ -113,28 +132,6 @@ sixers <- left_join(sixers, week_game, by = "slugTeam")
 sixers$fpts <- sixers$fit * sixers$count
 sixers_projection <- sum(sixers$fpts)
 
-
-#Game_Schedule
-game <- current_schedule()
-
-game <- game %>%
-filter(dateGame >= '2022-03-07' & dateGame <= '2022-03-13')
-
-home_game <- game %>%
-group_by(slugTeamHome) %>%
-summarize(count = n())
-
-away_game <- game %>%
-group_by(slugTeamAway) %>%
-summarize(count = n())
-
-colnames(home_game)[1] <- "team"
-colnames(away_game)[1] <- "team"
-
-week_game <- <- full_join(home_game, away_game, by = "team")
-week_game[is.na(week_game)] <- 0
-week_game <- week_game$count.x + week_game$count.y
-week_game <- week_game[,-c(2, 3)]
 
 #Model Making
 model = lm(formula = fpts ~ average_fpts + month_fpts + two_week_fpts + last_week_fpts)
