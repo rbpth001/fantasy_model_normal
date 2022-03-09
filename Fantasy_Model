@@ -48,7 +48,7 @@ filter(!is.na(last_week_fpts))
 predicted <- predict(model, newdata = regression, interval = "prediction")
 player <- data.frame(regression$name)
 colnames(player)[1] <- "name"
-player <- cbind(player, predicted, by = "name")
+player <- cbind(player, predicted)
 colnames(week_game)[1] <- "slugTeam"
 
 #Modified Week_Game
