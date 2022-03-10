@@ -67,7 +67,7 @@ summarize(count = n())
 colnames(home_game)[1] <- "team"
 colnames(away_game)[1] <- "team"
 
-week_game <- <- full_join(home_game, away_game, by = "team")
+week_game <- full_join(home_game, away_game, by = "team")
 week_game[is.na(week_game)] <- 0
 week_game$count <- week_game$count.x + week_game$count.y
 week_game <- week_game[,-c(2, 3)]
