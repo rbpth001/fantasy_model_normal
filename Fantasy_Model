@@ -16,36 +16,30 @@ data$fpts <- data$fga * -1 + data$fgm * 2 + data$fta * -1 + data$ftm * 1.5 + dat
 
 #Season_Aveage
 full_season <- data %>%
-filter(dateGame <= '2022-03-07') %>%
+filter(dateGame <= '2022-03-15') %>%
 group_by(namePlayer) %>%
 summarize(average_fpts = mean(fpts))
 
 #Month_Average
 last_month <- data %>%
-filter(dateGame >= '2022-02-08' & dateGame <= '2022-03-07') %>%
+filter(dateGame >= '2022-02-14' & dateGame <= '2022-03-15') %>%
 group_by(namePlayer) %>%
 summarize(month_fpts = mean(fpts))
 
-#Two_Week_Average
-last_two_week <- data %>%
-filter(dateGame >= '2022-02-22' & dateGame <= '2022-03-07') %>%
+#Ten_Day_Average
+last_ten_days <- data %>%
+filter(dateGame >= '2022-03-06' & dateGame <= '2022-03-15') %>%
 group_by(namePlayer) %>%
-summarize(two_week_fpts = mean(fpts))
+summarize(last_ten_day_fpts = mean(fpts))
 
-#Last_Week_Average
-last_week <- data %>%
-filter(dateGame >= '2022-03-01' & dateGame <= '2022-03-07') %>%
-group_by(namePlayer) %>%
-summarize(last_week_fpts = mean(fpts))
 
 #Prediction
-regression = join_all(list(full_season, last_month, last_two_week, last_week), by = "namePlayer", type = "full")
+regression = join_all(list(full_season, last_month, last_ten_days), by = "namePlayer", type = "full")
 colnames(regression)[1] <- "name"
-regression$two_week_fpts = ifelse(!is.na(regression$two_week_fpts), regression$two_week_fpts, regression$last_week_fpts)
-regression$month_fpts = ifelse(!is.na(regression$month_fpts), regression$month_fpts, regression$last_week_fpts)
+regression$month_fpts = ifelse(!is.na(regression$month_fpts), regression$month_fpts, regression$last_ten_day_fpts)
 regression <- regression %>%
-filter(!is.na(last_week_fpts))
-predicted <- predict(model, newdata = regression, interval = "prediction")
+filter(!is.na(last_ten_day_fpts))
+predicted <- predict(new_model, newdata = regression, interval = "prediction")
 player <- data.frame(regression$name)
 colnames(player)[1] <- "name"
 player <- cbind(player, predicted)
@@ -54,7 +48,7 @@ player <- cbind(player, predicted)
 game <- current_schedule()
 
 game <- game %>%
-filter(dateGame >= '2022-03-07' & dateGame <= '2022-03-13')
+filter(dateGame >= '2022-03-16' & dateGame <= '2022-03-20')
 
 home_game <- game %>%
 group_by(slugTeamHome) %>%
@@ -134,6 +128,6 @@ sixers_projection <- sum(sixers$fpts)
 
 
 #Model Making
-model = lm(formula = fpts ~ average_fpts + month_fpts + two_week_fpts + last_week_fpts)
+model = lm(formula = target_fpts ~ average_fpts + month_fpts + last_ten_day_fpts, data = regression)
 
 
