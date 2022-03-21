@@ -16,19 +16,19 @@ data$fpts <- data$fga * -1 + data$fgm * 2 + data$fta * -1 + data$ftm * 1.5 + dat
 
 #Season_Aveage
 full_season <- data %>%
-filter(dateGame <= '2022-03-15') %>%
+filter(dateGame <= '2022-03-20') %>%
 group_by(namePlayer) %>%
 summarize(average_fpts = mean(fpts))
 
 #Month_Average
 last_month <- data %>%
-filter(dateGame >= '2022-02-14' & dateGame <= '2022-03-15') %>%
+filter(dateGame >= '2022-02-19' & dateGame <= '2022-03-20') %>%
 group_by(namePlayer) %>%
 summarize(month_fpts = mean(fpts))
 
 #Ten_Day_Average
 last_ten_days <- data %>%
-filter(dateGame >= '2022-03-06' & dateGame <= '2022-03-15') %>%
+filter(dateGame >= '2022-03-11' & dateGame <= '2022-03-20') %>%
 group_by(namePlayer) %>%
 summarize(last_ten_day_fpts = mean(fpts))
 
@@ -48,7 +48,7 @@ player <- cbind(player, predicted)
 game <- current_schedule()
 
 game <- game %>%
-filter(dateGame >= '2022-03-16' & dateGame <= '2022-03-20')
+filter(dateGame >= '2022-03-21' & dateGame <= '2022-03-27')
 
 home_game <- game %>%
 group_by(slugTeamHome) %>%
