@@ -16,21 +16,31 @@ data$fpts <- data$fga * -1 + data$fgm * 2 + data$fta * -1 + data$ftm * 1.5 + dat
 
 #Season_Aveage
 full_season <- data %>%
-filter(dateGame <= '2022-11-14') %>%
+filter(dateGame <= '2022-11-13') %>%
 group_by(namePlayer) %>%
 summarize(average_fpts = mean(fpts))
 
 #Month_Average
 last_month <- data %>%
-filter(dateGame >= '2022-10-15' & dateGame <= '2022-11-14') %>%
+filter(dateGame >= '2022-10-14' & dateGame <= '2022-11-13') %>%
 group_by(namePlayer) %>%
 summarize(month_fpts = mean(fpts))
 
 #Ten_Day_Average
 last_ten_days <- data %>%
-filter(dateGame >= '2022-11-05' & dateGame <= '2022-11-14') %>%
+filter(dateGame >= '2022-11-04' & dateGame <= '2022-11-13') %>%
 group_by(namePlayer) %>%
 summarize(last_ten_day_fpts = mean(fpts))
+
+#player_database
+player_data_2 <- data[c("namePlayer", "slugTeam")]
+player_data_2 <- player_data_2 %>%
+group_by(namePlayer, slugTeam) %>%
+summarize(count = n())
+
+colnames(player_data_2)[1] <- "name"
+player_data_2 <- player_data_2[, -c(3)]
+
 
 
 #Prediction
@@ -48,7 +58,7 @@ player <- cbind(player, predicted)
 game <- current_schedule()
 
 game <- game %>%
-filter(dateGame >= '2022-03-21' & dateGame <= '2022-03-27')
+filter(dateGame >= '2022-11-14' & dateGame <= '2022-11-20')
 
 home_game <- game %>%
 group_by(slugTeamHome) %>%
@@ -68,7 +78,12 @@ week_game <- week_game[,-c(2, 3)]
 colnames(week_game)[1] <- "slugTeam"
 
 #Team-Player Check
-lakers_player <- c(""Jrue Holiday","Marcus Smart","Dejounte Murray","Bogdan Bogdanovic", "Kyle Kuzma", "Kevin Love", "Ivica Zubac","John Collins","Russell Westbrook","James Harden", "Mikal Bridges","Terance Mann","Steven Adams", "Malik Monk")
+euichan_player <- c("Jaden Ivey","Jamal Murray","Mikal Bridges","Jayson Tatum", "Joel Embiid", "RJ Barrett", "Bam Adebayo","Ivica Zubac","Ja Morant","Domantas Sabonis", "Myles Turner","Jalen Brunson","CJ McCollum")
+jiwon_player <- c("Kevin Porter Jr.","Jalen Green","Zach LaVine","Devin Booker", "John Collins", "Scottie Barnes", "Nikola Jokic","Karl-Anthony Towns","Kevin Huerter","Julius Randle", "De'Aaron Fox","Damian Lillard","Nikola Vucevic")
+daehoon_player <- c("Stephen Curry","Luka Doncic","Trae Young","Devin Vassell", "Tobias Harris", "Draymond Green", "Alperen Sengun","Kristaps Porzingis","Zion Williamson","Spencer Dinwiddie", "Aaron Gordon","Brandon Ingram","Jonas Valanciunas")
+chanjoon_player <- c("Dejounte Murray","Anthony Edwards","Terry Rozier","Keldon Johnson", "Jimmy Butler", "Al Horford", "Clint Capela","Wendell Carter Jr.","Josh Giddey","Franz Wagner", "Kevin Durant","Rudy Gobert","Tyrese Haliburton")
+sin_player <- c("Shai Gilgeous-Alexander","Jaylen Brown","Jordan Poole","O.G. Anunoby", "Paolo Banchero", "Lauri Markkanen", "Deandre Ayton","Giannis Antetokounmpo","Tyrese Maxey","Kyle Lowry", "DeMar DeRozan","Jarrett Allen","Evan Mobley")
+hwan_player <- c("LaMelo Ball","Donovan Mitchell","Gary Trent Jr.","Paul George", "Jerami Grant", "Andrew Wiggins", "Anthony Davis","Jakob Poeltl","Darius Garland","Mike Conley", "Russell Westbrook","Nic Claxton","Christian Wood")
 
 #Team Data Frame
 
