@@ -118,7 +118,7 @@ sin$fpts <- sin$fit * sin$count
 sin_projection <- sum(sin$fpts)
 
 #hwan
-hwan <- data.frame(sixers_player)
+hwan <- data.frame(hwan_player)
 colnames(hwan)[1] <- "name"
 hwan <- left_join(hwan, player, by = "name")
 hwan <- left_join(hwan, player_data_2, by = "name")
