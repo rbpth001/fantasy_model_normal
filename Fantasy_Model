@@ -78,12 +78,12 @@ week_game <- week_game[,-c(2, 3)]
 colnames(week_game)[1] <- "slugTeam"
 
 #Team-Player Check
-euichan_player <- c("Jaden Ivey","Jamal Murray","Mikal Bridges","Jayson Tatum", "Joel Embiid", "RJ Barrett", "Bam Adebayo","Ivica Zubac","Ja Morant","Domantas Sabonis", "Myles Turner","Jalen Brunson","CJ McCollum")
-jiwon_player <- c("Kevin Porter Jr.","Jalen Green","Zach LaVine","Devin Booker", "John Collins", "Scottie Barnes", "Nikola Jokic","Karl-Anthony Towns","Kevin Huerter","Julius Randle", "De'Aaron Fox","Damian Lillard","Nikola Vucevic")
-daehoon_player <- c("Stephen Curry","Luka Doncic","Trae Young","Devin Vassell", "Tobias Harris", "Draymond Green", "Alperen Sengun","Kristaps Porzingis","Zion Williamson","Spencer Dinwiddie", "Aaron Gordon","Brandon Ingram","Jonas Valanciunas")
-chanjoon_player <- c("Dejounte Murray","Anthony Edwards","Terry Rozier","Keldon Johnson", "Jimmy Butler", "Al Horford", "Clint Capela","Wendell Carter Jr.","Josh Giddey","Franz Wagner", "Kevin Durant","Rudy Gobert","Tyrese Haliburton")
-sin_player <- c("Shai Gilgeous-Alexander","Jaylen Brown","Jordan Poole","O.G. Anunoby", "Paolo Banchero", "Lauri Markkanen", "Deandre Ayton","Giannis Antetokounmpo","Tyrese Maxey","Kyle Lowry", "DeMar DeRozan","Jarrett Allen","Evan Mobley")
-hwan_player <- c("LaMelo Ball","Donovan Mitchell","Gary Trent Jr.","Paul George", "Jerami Grant", "Andrew Wiggins", "Anthony Davis","Jakob Poeltl","Darius Garland","Mike Conley", "Russell Westbrook","Nic Claxton","Christian Wood")
+euichan_player <- c("Jaden Ivey","Gordon Hayward","Mikal Bridges","Jayson Tatum", "Joel Embiid", "Kawhi Leonard", "Bam Adebayo","Jusuf Nurkic","Kyrie Irving","Domantas Sabonis", "Myles Turner","Jalen Brunson","CJ McCollum")
+jiwon_player <- c("Kevin Porter Jr.","Aleksej Pokusevski","Michael Porter Jr.","Devin Booker", "Bol Bol", "Scottie Barnes", "Kyle Kuzma","Dejounte Murray","Alperen Sengun","Julius Randle", "De'Aaron Fox","Franz Wagner","Nikola Vucevic")
+daehoon_player <- c("Stephen Curry","Luka Doncic","Trae Young","Devin Vassell", "Ben Simmons", "Jordan Clarkson", "Anthony Edwards","Rudy Gobert","Deandre Ayton","Spencer Dinwiddie", "Bradley Beal","Brandon Ingram","Jonas Valanciunas")
+chanjoon_player <- c("Zach LaVine","Zion Williamson","Terry Rozier","Keldon Johnson", "Jalen Green", "Al Horford", "Clint Capela","Steven Adams","Anfernee Simons","Karl-Anthony Towns", "Kevin Durant","Jrue Holiday","Tyrese Haliburton")
+sin_player <- c("Shai Gilgeous-Alexander","Jaylen Brown","Fred VanVleet","O.G. Anunoby", "Kelly Oubre Jr.", "Lauri Markkanen", "D'Angelo Russell","Giannis Antetokounmpo","Kristaps Porzingis","Kyle Lowry", "DeMar DeRozan","Jarrett Allen","Evan Mobley")
+hwan_player <- c("P.J. Washington","Donovan Mitchell","Draymond Green","Paul George", "Jerami Grant", "Andrew Wiggins", "Anthony Davis","Jakob Poeltl","Darius Garland","Mike Conley", "Russell Westbrook","Nic Claxton","Christian Wood")
 
 #Team Data Frame
 
