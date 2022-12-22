@@ -1,0 +1,30 @@
+library(shiny)
+
+# Define UI for application that shows dataframe
+ui <- fluidPage(
+  # Application title
+  titlePanel("NBA Fantasy Trade Machine"),
+  # Sidebar 
+  sidebarLayout(
+    sidebarPanel(
+      helpText("Welcome Fellas")
+    ),
+    # Show a dataframe
+    mainPanel(
+      DT::dataTableOutput('x11')
+    )
+  )
+)
+
+
+# Define server logic required to show a database
+server <- function(input, output) {
+  player <- read.csv('https://raw.githubusercontent.com/rbpth001/fantasy_model_normal/main/player.csv', fileEncoding =  'utf-8')  
+  output$x11 <- DT::renderDataTable(
+      player, server = FALSE, selection = 'single'
+    )
+    output$y11 <- renderPrint(input$x11_rows_selected)
+}
+
+# Run the application 
+shinyApp(ui = ui, server = server)
