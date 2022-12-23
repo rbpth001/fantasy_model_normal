@@ -1,29 +1,40 @@
 library(shiny)
 
-# Define UI for application that shows dataframe
+# Define UI for application that draws a histogram
 ui <- fluidPage(
   # Application title
   titlePanel("NBA Fantasy Trade Machine"),
-  # Sidebar 
-  sidebarLayout(
-    sidebarPanel(
-      helpText("Welcome Fellas")
-    ),
-    # Show a dataframe
-    mainPanel(
-      DT::dataTableOutput('x11')
+  # Sidebar with a slider input for number of bins
+  tabPanel(
+    'Player',
+    fluidRow(
+      column(
+        6, h1('Team 1'), hr(),
+        DT::dataTableOutput('x11'),
+        verbatimTextOutput('y11')
+      ),
+      column(
+        6, h1('Team 2'), hr(),
+        DT::dataTableOutput('x12'),
+        verbatimTextOutput('y12')
+      )
     )
   )
 )
 
 
-# Define server logic required to show a database
+# Define server logic required to draw a histogram
 server <- function(input, output) {
   player <- read.csv('https://raw.githubusercontent.com/rbpth001/fantasy_model_normal/main/player.csv', fileEncoding =  'utf-8')  
   output$x11 <- DT::renderDataTable(
-      player, server = FALSE, selection = 'single'
+      player, server = FALSE, selection = list(target = 'cell')
     )
-    output$y11 <- renderPrint(input$x11_rows_selected)
+  output$y11 <- renderPrint(sum(as.numeric(player[input$x11_cells_selected])))
+  output$x12 <- DT::renderDataTable(
+    player, server = FALSE, selection = list(target = 'cell')
+  )
+  output$y12 <- renderPrint(sum(as.numeric(player[input$x12_cells_selected])))
+
 }
 
 # Run the application 
