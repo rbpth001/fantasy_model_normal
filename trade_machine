@@ -17,6 +17,11 @@ ui <- fluidPage(
         6, h1('Team 2'), hr(),
         DT::dataTableOutput('x12'),
         verbatimTextOutput('y12')
+      ),
+      column(
+        6, h1('Team 3'), hr(),
+        DT::dataTableOutput('x13'),
+        verbatimTextOutput('y13')
       )
     )
   )
@@ -34,7 +39,10 @@ server <- function(input, output) {
     player, server = FALSE, selection = list(target = 'cell')
   )
   output$y12 <- renderPrint(sum(as.numeric(player[input$x12_cells_selected])))
-
+  output$x13 <- DT::renderDataTable(
+    player, server = FALSE, selection = list(target = 'cell')
+  )
+  output$y13 <- renderPrint(sum(as.numeric(player[input$x13_cells_selected])))
 }
 
 # Run the application 
