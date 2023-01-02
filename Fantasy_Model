@@ -53,7 +53,7 @@ predicted <- predict(model, newdata = regression, interval = "prediction")
 player <- data.frame(regression$name)
 colnames(player)[1] <- "name"
 player <- cbind(player, predicted)
-write.csv(player[, 1:2],file="C:/Users/gwatop/Documents/player.csv")
+write.csv(player[, 1:2],file="player.csv")
 
 
 #Modified Week_Game
