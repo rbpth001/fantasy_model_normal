@@ -48,7 +48,7 @@ regression = join_all(list(full_season, last_month, last_ten_days), by = "namePl
 colnames(regression)[1] <- "name"
 regression$month_fpts = ifelse(!is.na(regression$month_fpts), regression$month_fpts, regression$last_ten_day_fpts)
 regression <- regression %>%
-filter(!is.na(last_ten_day_fpts))
+    filter(!is.na(last_ten_day_fpts))
 regression <- join_all(list(player_data_2, regression), by = "name", type = "full")
 predicted <- predict(model, newdata = regression, interval = "prediction")
 player <- data.frame(regression$name)
