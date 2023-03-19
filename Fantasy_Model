@@ -16,19 +16,19 @@ data$fpts <- data$fga * -1 + data$fgm * 2 + data$fta * -1 + data$ftm * 1.5 + dat
 
 #Season_Aveage
 full_season <- data %>%
-    filter(dateGame <= '2023-03-12') %>%
+    filter(dateGame <= '2023-03-18') %>%
     group_by(namePlayer) %>%
     summarize(average_fpts = mean(fpts))
 
 #Month_Average
 last_month <- data %>%
-    filter(dateGame >= '2023-02-11' & dateGame <= '2023-03-12') %>%
+    filter(dateGame >= '2023-02-17' & dateGame <= '2023-03-18') %>%
     group_by(namePlayer) %>%
     summarize(month_fpts = mean(fpts))
 
 #Ten_Day_Average
 last_ten_days <- data %>%
-    filter(dateGame >= '2023-03-03' & dateGame <= '2023-03-12') %>%
+    filter(dateGame >= '2023-03-09' & dateGame <= '2023-03-18') %>%
     group_by(namePlayer) %>%
     summarize(last_ten_day_fpts = mean(fpts))
 
@@ -61,7 +61,7 @@ write.csv(player[, 1:2],file="player.csv")
 game <- current_schedule()
 
 game <- game %>%
-filter(dateGame >= '2022-11-14' & dateGame <= '2022-11-20')
+filter(dateGame >= '2023-03-20' & dateGame <= '2023-03-26')
 
 home_game <- game %>%
 group_by(slugTeamHome) %>%
